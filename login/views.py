@@ -14,6 +14,9 @@ import json
 def index(request):
     return render(request, 'index.html')
 
+def register(request):
+    return render(request, 'register.html')
+
 #registro
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()

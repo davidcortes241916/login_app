@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load socialaccount %}
 
 {% block titulo %}Login{% endblock titulo %}
 
@@ -23,7 +24,7 @@
                         <!-- Email input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="email" id="form2Example1" class="form-control" />
-                            <label class="form-label" for="form2Example1">Email address</label>
+                            <label class="form-label" for="form2Example1">Email</label>
                         </div>
 
                         <!-- Password input -->
@@ -38,13 +39,13 @@
                             <!-- Checkbox -->
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-                                <label class="form-check-label" for="form2Example31"> Remember me </label>
+                                <label class="form-check-label" for="form2Example31">Recordarme</label>
                             </div>
                             </div>
 
                             <div class="col">
                             <!-- Simple link -->
-                            <a href="#!">Forgot password?</a>
+                            <a href="#!">Olvidaste la contraseña?</a>
                             </div>
                         </div>
 
@@ -53,22 +54,10 @@
 
                         <!-- Register buttons -->
                         <div class="text-center">
-                            <p>Not a member? <a href="#!">Register</a></p>
-                            <p>or sign up with:</p>
+                            <p>No estas registrado?<a href="register"> Registrate</a></p>
+                            <p>Ingresar con:</p>
                             <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-facebook-f"></i>
-                            </button>
-
-                            <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-google"></i>
-                            </button>
-
-                            <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-twitter"></i>
-                            </button>
-
-                            <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-github"></i>
+                            <a href="{% provider_login_url 'google' %}"><i class="fab fa-google"></i></a>
                             </button>
                         </div>
                         </form>
@@ -77,5 +66,7 @@
         </div><br><br><br><br><br>
 {% endblock contenido %}
 {% block scripts %}
+<script>
 
+</script>
 {% endblock scripts %}

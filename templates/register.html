@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block titulo %}Registro{% endblock titulo %}
+
+{% block contenido %}
+        <!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+  <style>
+    .cascading-right {
+      margin-right: -50px;
+    }
+
+    @media (max-width: 991.98px) {
+      .cascading-right {
+        margin-right: 0;
+      }
+    }
+  </style>
+
+  <!-- Jumbotron -->
+   <header class="masthead" style="background-image: url('{% static "assets/img/home-bg.jpg" %}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Registrar Usuario</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header> <br><br>
+  <div class="container py-4">
+    <div class="row g-0 align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="card cascading-right bg-body-tertiary" style="
+            backdrop-filter: blur(30px);
+            ">
+          <div class="card-body p-5 shadow-5 text-center">
+            <h2 class="fw-bold mb-5">Registrate gratis</h2>
+            <form>
+                {% csrf_token %}
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" id="username" class="form-control" />
+                    <label class="form-label" for="username">Nombre de usuario</label>
+                </div>
+
+              <!-- Email input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="email" id="email" class="form-control" />
+                <label class="form-label" for="email">Email</label>
+              </div>
+
+              <!-- Password input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="password" id="password" class="form-control" />
+                <label class="form-label" for="password">Password</label>
+              </div>
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="password" id="password2" class="form-control" />
+                <label class="form-label" for="password2">Confirmar Password</label>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                Registrarse
+              </button>
+
+              <!-- Register buttons -->
+              <div class="text-center">
+                <p>O registrate con:</p>
+
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                  <a href="{% provider_login_url 'google' %}"><i class="fab fa-google"></i></a>
+                </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-100 rounded-4 shadow-4"
+          alt="" />
+      </div>
+    </div>
+  </div>
+  <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->
+ <br><br><br><br><br>
+{% endblock contenido %}
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const data = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                password2: document.getElementById('password2').value
+            };
+
+            //validar correos
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            } if (!validateEmail(data.email)) {
+                alert('Email inválido');
+                return;
+            }
+
+            //validar contraseñas
+            if (data.password !== data.password2) {
+                alert('Las contraseñas no coinciden');
+                return;
+            }
+
+            //enviar datos al backend
+            fetch('/api/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(data)
+            })
+            .then(async response => {
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw result; // enviamos los errores al catch
+            }
+
+            return result;
+            })
+            .then(data => {
+                console.log('Usuario creado:', data);
+                alert('Usuario registrado exitosamente');
+                window.location.href = '/'; // redirigir al login
+            })
+            .catch(error => {
+                console.log("Errores del backend:", error);
+
+                if (error.username) {
+                    alert(error.username[0]);
+                } else if (error.non_field_errors) {
+                    alert(error.non_field_errors[0]);
+                } else {
+                    alert("Error en el formulario");
+                }
+            });
+
+        });
+    });
+</script>
+{% endblock scripts %}
