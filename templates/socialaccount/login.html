@@ -1,0 +1,38 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block contenido %}
+<header class="masthead" style="background-image: url('{% static "assets/img/home-bg.jpg" %}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Inicio de Sesion</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header> <br><br>
+
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="container">
+                        <h1>Confirmar acceso con Google</h1>
+                        <p>Estás a punto de iniciar sesión usando tu cuenta de Google.</p>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="process" value="login">
+                            
+                            <button type="submit" class="btn btn-primary">Continuar con Google</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock scripts %}

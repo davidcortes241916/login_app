@@ -31,9 +31,9 @@
                 </div>
             </div>
         </header> <br><br>
-  <div class="container py-4">
-    <div class="row g-0 align-items-center">
-      <div class="col-lg-6 mb-5 mb-lg-0">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="card cascading-right bg-body-tertiary" style="
             backdrop-filter: blur(30px);
             ">
@@ -52,6 +52,7 @@
                 <input type="email" id="email" class="form-control" />
                 <label class="form-label" for="email">Email</label>
               </div>
+              <p id="mensaje-respuesta" style="color: blue; font-weight: bold;"></p>
 
               <!-- Password input -->
               <div data-mdb-input-init class="form-outline mb-4">
@@ -68,22 +69,12 @@
               <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
                 Registrarse
               </button>
-
-              <!-- Register buttons -->
-              <div class="text-center">
-                <p>O registrate con:</p>
-
-                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-                  <a href="{% provider_login_url 'google' %}"><i class="fab fa-google"></i></a>
-                </button>
+              <button id="volverBtn" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                Volver
+              </button>
             </form>
           </div>
         </div>
-      </div>
-
-      <div class="col-lg-6 mb-5 mb-lg-0">
-        <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-100 rounded-4 shadow-4"
-          alt="" />
       </div>
     </div>
   </div>
@@ -94,6 +85,12 @@
 {% endblock contenido %}
 {% block scripts %}
 <script>
+    //boton volver
+    document.getElementById('volverBtn').addEventListener('click', function() {
+        window.location.href = '/';
+    });
+
+    //registro con fetch API
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -108,11 +105,13 @@
             };
 
             //validar correos
+            const mensajeRespuesta = document.getElementById('mensaje-respuesta');
             function validateEmail(email) {
                 const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return re.test(String(email).toLowerCase());
             } if (!validateEmail(data.email)) {
-                alert('Email inválido');
+                mensajeRespuesta.textContent = "¡Email inválido!";
+                mensajeRespuesta.style.color = "red";
                 return;
             }
 

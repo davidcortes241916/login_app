@@ -162,10 +162,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #configuracion allauth
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+
+LOGIN_REDIRECT_URL = 'login:home' 
+LOGOUT_REDIRECT_URL = 'login:login_page'
