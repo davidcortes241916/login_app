@@ -53,6 +53,7 @@
 
                         <!-- Submit button -->
                         <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Ingresar</button>
+                        <div id="message"></div>    
 
                         <!-- Register buttons -->
                         <div class="text-center">
@@ -73,6 +74,8 @@
         const form = document.querySelector('form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
+
+            message.innerHTML = "Cargando... ⏳";
             
             const data = {
                 email: document.getElementById('email').value,
