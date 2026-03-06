@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block titulo %}Editar Post{% endblock titulo %}
+
+{% block contenido %}
+        <header class="masthead" style="background-image: url('{% static "assets/img/home-bg.jpg" %}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Editar Post</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header> <br><br>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <form>
+                        {% csrf_token %}
+                        <!-- Email input -->
+                        <p id="error-message" class="text-danger"></p>
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" id="Titulo" class="form-control" />
+                            <label class="form-label" for="Titulo">Titulo</label>
+                        </div>
+
+                        <!-- Password input -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <textarea type="textarea" id="Contenido" class="form-control"></textarea>
+                            <label class="form-label" for="Contenido">Contenido</label>
+                        </div>
+
+                        <!-- 2 column grid layout for inline styling -->
+                        <div class="row mb-4">
+                            <div class="col d-flex justify-content-center">
+                            <!-- Checkbox -->
+                            <div class="form-file-button">
+                                <label class="form-label" for="imagen">imagen portada:</label>
+                                <input class="form-file-button" type="file" value="" id="imagen"/>
+                            </div>
+                            <div class="form-file-button">
+                                <label class="form-label" for="video">video introductorio:</label>
+                                <input class="form-file-button" type="file" value="" id="video"/>
+                            </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Crear Post</button>
+                        <div id="message"></div>    
+                        </form>
+                </div>
+            </div>
+        </div><br><br><br><br><br>
+{% endblock contenido %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock scripts %}

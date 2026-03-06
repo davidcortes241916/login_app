@@ -44,6 +44,19 @@ class viewsSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return request and request.user == obj.autor
 
-#actualizar post
+#editar post
+class EditarPostSerializer(serializers.ModelSerializer):
+    autor = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ['id', 'autor', 'titulo', 'contenido', 'imagen', 'video', 'created_at']
+
+    def update(self, instance, validated_data):
+        for field in ['titulo', 'contenido', 'imagen', 'video']:
+            if field in validated_data:
+                setattr(instance, field, validated_data[field])
+        instance.save()
+        return instance
 
 #eliminar post
