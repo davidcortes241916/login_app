@@ -26,27 +26,26 @@ def register(request):
     return render(request, 'signup.html')
 
 #registro
-class UserRegistrationView(generics.CreateAPIView):
+class UserRegistrationView(generics.CreateAPIView): #para registrar se usa CreateAPIView
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
 
 #login
 User= get_user_model()
 class UserLoginView(generics.GenericAPIView):
-    def post(self, request):
+    def post(self, request): #se define el método post para recibir los datos de login
         serializer = UserSerializer(
-            data=request.data,
-            context={"request": request}
+            data=request.data,#se pasan los datos del request al serializer para que los valide
         )
 
         if serializer.is_valid():
             user = serializer.validated_data["user"]
-            login(request, user)
-            return Response({"success": True})
+            login(request, user)#se loguea al usuario
+            return Response({"success": True})#se devuelve una respuesta de éxito
 
         return Response(
             serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST #si el serializer no es válido se devuelve un error 400 con los errores del serializer
         )
         
 #logout

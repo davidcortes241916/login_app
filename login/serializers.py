@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, get_user_model
 
 User = get_user_model()
 
+#autenticación de usuarios
 class UserSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
@@ -20,20 +21,13 @@ class UserSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError("Usuario inactivo.")
 
-        user = authenticate(
-            self.context.get("request"),
-            username=user.username,
-            password=password
-        )
-
         if not user:
             raise serializers.ValidationError("Credenciales inválidas.")
 
         data["user"] = user
         return data
         
-    
-
+#crear un serializer para el usuario
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
@@ -59,3 +53,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+#actualizar usuario
+
+#eliminar usuario
