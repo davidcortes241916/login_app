@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 #post
 from .models import Post
-from .serializers import EditarPostSerializer, PostSerializer, viewsSerializer
+from .serializers import EditarPostSerializer, PostDetailSerializer, PostSerializer, viewsSerializer
 from rest_framework.exceptions import PermissionDenied
 
 #vistas post
@@ -38,6 +38,11 @@ class PostListView(generics.ListAPIView):
         context = super().get_serializer_context()
         context.update({'request': self.request})  # Agregar el request al contexto del serializer
         return context
+    
+#mostrar un post en detalle
+class PostDetailView(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer    
 
 #actualizar
 class EditarPostView(generics.UpdateAPIView):

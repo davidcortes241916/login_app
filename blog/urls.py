@@ -10,5 +10,6 @@ urlpatterns = [
     #funciones post DRF
     path('api/crear_post/', views.CrearPostView.as_view(), name='crear_post_api'),
     path('api/posts/', views.PostListView.as_view(), name='posts_api'),
+    path('api/post/<int:pk>/', views.PostDetailView.as_view(), name='post_api'),
     path('api/editar_post/<int:pk>/', views.EditarPostView.as_view(), name='editar_post_api'),
 ]

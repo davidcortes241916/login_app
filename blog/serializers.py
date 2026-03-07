@@ -43,6 +43,14 @@ class viewsSerializer(serializers.ModelSerializer):
     def get_can_delete(self, obj):
         request = self.context.get('request')
         return request and request.user == obj.autor
+    
+#mostrar un post en detalle
+class PostDetailSerializer(serializers.ModelSerializer):
+    autor = serializers.CharField(source='autor.username', read_only=True)  # Mostrar el nombre de usuario del autor
+
+    class Meta:
+        model = Post
+        fields = ['id', 'autor', 'titulo', 'contenido', 'imagen', 'video', 'created_at']
 
 #editar post
 class EditarPostSerializer(serializers.ModelSerializer):
