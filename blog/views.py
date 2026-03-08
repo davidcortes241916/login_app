@@ -60,4 +60,14 @@ class EditarPostView(generics.UpdateAPIView):
             raise PermissionDenied('No tienes permiso para editar este post')
         return obj
 
-#eliminar
+# eliminar post
+class EliminarPostView(generics.DestroyAPIView):
+    queryset = Post.objects.all()
+
+    def get_object(self):
+        obj = super().get_object()
+
+        if obj.autor != self.request.user:
+            raise PermissionDenied('No tienes permiso para eliminar este post')
+
+        return obj

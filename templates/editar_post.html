@@ -21,18 +21,19 @@
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <form>
+                        <div id="contenido"></div>
                         {% csrf_token %}
                         <!-- Email input -->
                         <p id="error-message" class="text-danger"></p>
                         <div data-mdb-input-init class="form-outline mb-4">
                             <input type="text" id="Titulo" class="form-control" />
-                            <label class="form-label" for="Titulo">Titulo</label>
+                            <label class="form-label" for="Titulo" id="label-titulo">Titulo</label>
                         </div>
 
                         <!-- Password input -->
                         <div data-mdb-input-init class="form-outline mb-4">
                             <textarea type="textarea" id="Contenido" class="form-control"></textarea>
-                            <label class="form-label" for="Contenido">Contenido</label>
+                            <label class="form-label" for="Contenido" id="label-contenido">Contenido</label>
                         </div>
 
                         <!-- 2 column grid layout for inline styling -->
@@ -40,18 +41,18 @@
                             <div class="col d-flex justify-content-center">
                             <!-- Checkbox -->
                             <div class="form-file-button">
-                                <label class="form-label" for="imagen">Imagen portada:</label>
+                                <label class="form-label" for="imagen" id="label-imagen">Imagen portada:</label>
                                 <input class="form-file-button" type="file" value="" id="imagen"/>
                             </div>
                             <div class="form-file-button">
-                                <label class="form-label" for="video">Video introductorio:</label>
+                                <label class="form-label" for="video" id="label-video">Video introductorio:</label>
                                 <input class="form-file-button" type="file" value="" id="video"/>
                             </div>
                             </div>
                         </div>
 
                         <!-- Submit button -->
-                        <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Crear Post</button>
+                        <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Editar</button>
                         <div id="message"></div>    
                         </form>
                 </div>
@@ -61,5 +62,88 @@
 
 {% block scripts %}
 <script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const url = window.location.pathname
+    const postId = url.split("/")[3]
+
+    // Cargar datos actuales del post
+    fetch(`/blog/api/post/${postId}/`)
+    .then(response => {
+        if(!response.ok){
+            throw new Error("Error al cargar el post")
+        }
+        return response.json()
+    })
+    .then(data => {
+
+        // llenar inputs
+        document.getElementById("Titulo").value = data.titulo
+        document.getElementById("Contenido").value = data.contenido
+        document.getElementById("imagen").value = data.imagen
+        document.getElementById("video").value = data.video
+
+        // mostrar dato anterior en labels
+        document.getElementById("label-titulo").innerText = "Titulo actual: " + data.titulo
+        document.getElementById("label-contenido").innerText = "Contenido actual: " + data.contenido
+        document.getElementById("label-imagen").innerText = "Imagen actual: " + data.imagen
+        document.getElementById("label-video").innerText = "Video actual: " + data.video
+
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+
+    // actualizar post
+    document.querySelector("form").addEventListener("submit", function(e){
+
+        e.preventDefault()
+
+        const formData = new FormData()
+
+        formData.append("titulo", document.getElementById("Titulo").value)
+        formData.append("contenido", document.getElementById("Contenido").value)
+        formData.append("imagen", document.getElementById("imagen").value)
+        formData.append("video", document.getElementById("video").value)
+
+        const imagen = document.getElementById("imagen").files[0]
+        const video = document.getElementById("video").files[0]
+
+        if(imagen){
+            formData.append("imagen", imagen)
+        }
+
+        if(video){
+            formData.append("video", video)
+        }
+
+        fetch(`/blog/api/editar_post/${postId}/`, {
+            method: "PUT",
+            body: formData,
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => {
+            if(!response.ok){
+                throw new Error("Error al actualizar")
+            }
+            return response.json()
+        })
+        .then(data => {
+
+            document.getElementById("message").innerHTML =
+            `<p class="text-success">Post actualizado correctamente</p>`
+            window.location.href = `/blog/post/${postId}/`
+
+        })
+        .catch(error => {
+            document.getElementById("error-message").innerText = error
+        })
+
+    })
+
+})
 </script>
 {% endblock scripts %}

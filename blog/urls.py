@@ -12,4 +12,5 @@ urlpatterns = [
     path('api/posts/', views.PostListView.as_view(), name='posts_api'),
     path('api/post/<int:pk>/', views.PostDetailView.as_view(), name='post_api'),
     path('api/editar_post/<int:pk>/', views.EditarPostView.as_view(), name='editar_post_api'),
+    path('api/eliminar_post/<int:pk>/', views.EliminarPostView.as_view(), name='eliminar_post_api'),
 ]
