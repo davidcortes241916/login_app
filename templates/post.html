@@ -7,17 +7,7 @@
 {% block contenido %}
     <body>
         <!-- Page Header, todo esto en el fetch xd-->
-        <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
-            <div class="container position-relative px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
-                        <div class="post-heading"> <!--primer fetch-->
-                            <div id="encabezado-post"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <div id="encabezado-post"></div>
         <!-- Post Content-->
         <article class="mb-4">
             <div class="container px-4 px-lg-5">
@@ -48,13 +38,26 @@ fetch(`/blog/api/post/${postId}/`)
 
     const headerDiv = document.getElementById("encabezado-post")
     headerDiv.innerHTML = `
-        <h1>${data.titulo}</h1>
-        <img src="${data.imagen}" alt="Imagen del post" class="img-fluid" />
+        <header class="masthead" style="background-image: url('{% static "posts/${data.imagen}/" %}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading"> <!--primer fetch-->
+                            <div id="encabezado-post">
+                                <h1>${data.titulo}</h1>
+                                <span class="subheading">${data.autor}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
     `
 
     const contentDiv = document.getElementById("post-content")
     contentDiv.innerHTML = `
         <p>${data.contenido}</p>
+        <img src="${data.imagen}" class="img-fluid">
         <video controls class="img-fluid">
             <source src="${data.video}" type="video/mp4">
         </video>
