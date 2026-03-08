@@ -1,0 +1,41 @@
+# Login App - Django Authentication Project
+
+Aplicación web desarrollada con **Django** que implementa un sistema de autenticación de usuarios con registro, inicio de sesión y cierre de sesión.
+
+Este proyecto fue creado como práctica para comprender el sistema de autenticación de Django y el manejo de usuarios dentro de una aplicación web.
+
+---
+
+# 🚀 Características
+
+- Registro de usuarios
+- Inicio de sesión (Login)
+- Cierre de sesión (Logout)
+- Autenticación usando el sistema de usuarios de Django
+- Protección de vistas con usuarios autenticados
+- Manejo de mensajes de error
+- Uso de templates y formularios de Django
+
+Django incluye un sistema de autenticación integrado que permite gestionar usuarios, sesiones y permisos dentro de una aplicación web. :contentReference[oaicite:0]{index=0}
+
+---
+
+# 🛠 Tecnologías utilizadas
+
+- Python
+- Django
+- HTML
+- CSS
+- Bootstrap
+- SQLite (base de datos por defecto de Django)
+
+---
+
+# 📂 Estructura del proyecto
+
+# ⚙️ Instalación
+
+1️⃣ Clonar el repositorio
+
+```bash
+git clone https://github.com/davidcortes241916/login_app.git
