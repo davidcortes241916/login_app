@@ -1,8 +1,8 @@
 # Login App - Django Authentication Project
 
-Aplicación web desarrollada con **Django** que implementa un sistema de autenticación de usuarios con registro, inicio de sesión y cierre de sesión.
+Aplicación web desarrollada con **Django** que implementa un sistema de autenticación de usuarios con registro, inicio de sesión y cierre de sesión. Un login basico con funcion de CREATE, READ y UPDATE. Ademas de ingresar con Google.
 
-Este proyecto fue creado como práctica para comprender el sistema de autenticación de Django y el manejo de usuarios dentro de una aplicación web.
+Este proyecto fue creado como práctica para comprender el sistema de autenticación de Django y el manejo de usuarios dentro de una aplicación web. Y la creacion de posts con CRUD, así como la creación de una API REST de forma sencilla.
 
 ---
 
@@ -24,6 +24,8 @@ Django incluye un sistema de autenticación integrado que permite gestionar usua
 
 - Python
 - Django
+- allauth (autenticación de usuarios)
+- django-rest-framework (API REST)
 - HTML
 - CSS
 - Bootstrap
