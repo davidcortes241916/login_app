@@ -4,13 +4,15 @@ from django.shortcuts import render, redirect
 from rest_framework import generics, response, status
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate, login, get_user_model, logout
-from .serializers import UserRegistrationSerializer, UserSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer, UserUpdateSerializer
 from django.contrib.auth.models import User
 
 #json
 from django.http import JsonResponse
 from rest_framework.response import Response
 import json
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import IsAuthenticated
 
 #vistas
 def login_page(request):
@@ -24,6 +26,9 @@ def index(request):
 
 def register(request):
     return render(request, 'signup.html')
+
+def editar(request, pk):
+    return render(request, 'edit_login.html')
 
 #registro
 class UserRegistrationView(generics.CreateAPIView): #para registrar se usa CreateAPIView
@@ -47,8 +52,25 @@ class UserLoginView(generics.GenericAPIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST #si el serializer no es válido se devuelve un error 400 con los errores del serializer
         )
+    
+#editar usuario
+class EditarUsuarioView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        obj = super().get_object()
+
+        print("Usuario de la URL:", obj.username)
+        print("Usuario logueado:", self.request.user)
+
+        if obj.username != self.request.user.username:
+            raise PermissionDenied('No tienes permiso para editar este usuario')
+
+        return obj
         
-#logout
+#logout view
 def logout_view(request):
     logout(request)
     return redirect('/')

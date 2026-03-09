@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block titulo %}Editar{% endblock titulo %}
+
+{% block contenido %}
+        <!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+  <!-- Jumbotron -->
+   <header class="masthead" style="background-image: url('{% static "assets/img/home-bg.jpg" %}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Editar Usuario</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header> <br><br>
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="card cascading-right bg-body-tertiary" style="
+            backdrop-filter: blur(30px);
+            ">
+          <div class="card-body p-5 shadow-5 text-center">
+            <h2 class="fw-bold mb-5">Registrate gratis</h2>
+            <form>
+                {% csrf_token %}
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" id="username" class="form-control" />
+                    <label class="form-label" for="username" id="label-username">Nombre de usuario</label>
+                </div>
+
+              <!-- Email input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="email" id="email" class="form-control" />
+                <label class="form-label" for="email" id="label-email">Email</label>
+              </div>
+              <p id="mensaje-respuesta" style="color: blue; font-weight: bold;"></p>
+
+              <!-- Password input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="password" id="password" class="form-control" />
+                <label class="form-label" for="password" id="label-password">Password</label>
+              </div>
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input type="password" id="password2" class="form-control" />
+                <label class="form-label" for="password2" id="label-password2">Confirmar Password</label>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                Editar
+              </button>
+              <button id="volverBtn" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                Volver
+              </button>
+            </form>
+            <div id="message"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->
+ <br><br><br><br><br>
+{% endblock contenido %}
+{% block scripts %}
+<script>
+
+const url = window.location.pathname
+const userId = url.split("/")[2]
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    console.log("User ID:", userId)
+
+    fetch(`/api/editar/${userId}/`)
+    .then(response => {
+        if(!response.ok){
+            throw new Error("Error al cargar el usuario")
+        }
+        return response.json()
+    })
+    .then(data => {
+
+        document.getElementById("username").value = data.username
+        document.getElementById("email").value = data.email
+
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+})
+
+// editar usuario
+document.querySelector("form").addEventListener("submit", function(e){
+
+    e.preventDefault()
+
+    const formData = new FormData()
+
+    formData.append("username", document.getElementById("username").value)
+    formData.append("email", document.getElementById("email").value)
+
+    const password = document.getElementById("password").value
+    const password2 = document.getElementById("password2").value
+
+    if(password){
+        formData.append("password", password)
+        formData.append("password2", password2)
+    }
+
+    fetch(`/api/editar/${userId}/`, {
+        method: "PUT",
+        body: formData,
+        headers: {
+            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => {
+        if(!response.ok){
+            throw new Error("Error al editar")
+        }
+        return response.json()
+    })
+    .then(data => {
+
+        document.getElementById("message").innerHTML =
+        `<p class="text-success">Usuario editado correctamente</p>`
+
+        setTimeout(() => {
+            window.location.href = "/"
+        }, 2000)
+
+    })
+    .catch(error => {
+        document.getElementById("error-message").innerText = error
+    })
+
+})
+
+</script>
+{% endblock scripts %}

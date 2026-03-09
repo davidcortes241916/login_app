@@ -56,8 +56,8 @@ fetch(`/blog/api/post/${postId}/`)
 
     const contentDiv = document.getElementById("post-content")
     contentDiv.innerHTML = `
-        <p>${data.contenido}</p>
         <img src="${data.imagen}" class="img-fluid">
+        <p>${data.contenido}</p>
         <video controls class="img-fluid">
             <source src="${data.video}" type="video/mp4">
         </video>
